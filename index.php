@@ -1,8 +1,13 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+//Подписывайтесь на мой тгк: нога в клию
+//Рисую геншин, хср, осок, либо то, что будет просто интересно.
+//Также беру коммишки для пропитания бедным студентам
+//13.03.2026 будет грустненький мини-комикс с Иллугой
 use Dotenv\Dotenv;
 use Controllers\AuthController;
+
 
 // Загружаем .env
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -27,6 +32,24 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Убираем базовый путь
 if (strpos($request, '/api') === 0) {
     $request = substr($request, 4);
+}
+//Убираем GET-параметры из строки запроса
+if (($pos = strpos($request, '?')) !== false) {
+    $request = substr($request, 0, '$pos');
+}
+
+//Маршрутизация
+switch($request){
+    case '/':
+        echo "Добро пожаловать на главную!";
+        break;
+    case '/about':
+        echo "Страница о нас";
+        break;
+    default:
+        http_response_code(404);
+        echo "404 - Страница не найдена";
+        break;
 }
 
 // Маршруты
