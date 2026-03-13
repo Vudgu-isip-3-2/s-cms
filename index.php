@@ -13,6 +13,11 @@ use Controllers\AuthController;
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+//Также беру коммишки для пропитания бедным студентам
+//13.03.2026 будет грустненький мини-комикс с Иллугой
+use Dotenv\Dotenv;
+use Controllers\AuthController;
+
 // CORS headers для API1235664564567
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
