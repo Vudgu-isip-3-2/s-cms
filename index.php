@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-
+// Здравствуйте, еле как разобрался
 use Dotenv\Dotenv;
 use Controllers\AuthController;
 
