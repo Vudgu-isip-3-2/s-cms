@@ -1,0 +1,94 @@
+/* --- ОБЩИЕ СТИЛИ ПРОЕКТА --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a;
+    color: #ececec;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    margin: 0;
+}
+
+/* Сетка для карточек (Flexbox) */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Стили интерактивных элементов (карточек) */
+.card {
+    background: #262626;
+    padding: 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 1px solid #3d3d3d;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    text-align: center;
+}
+
+/* Состояние при наведении */
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #ff4d4d;
+    box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+}
+
+/* --- ЛОГИКА МОДАЛЬНЫХ ОКОН (CSS-часть) --- */
+
+/* Оверлей */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+/* Контейнер окна */
+.modal-content {
+    background-color: #222;
+    margin: 10% auto;
+    padding: 30px;
+    border-left: 5px solid #ff4d4d;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+    animation: animatetop 0.4s;
+}
+
+/* Анимация появления */
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+    to {
+        top: 0;
+        opacity: 1;
+    }
+}
+
+/* Кнопка закрытия */
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
