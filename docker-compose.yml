@@ -9,7 +9,7 @@ services:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
-      - ./public:/var/www/html
+      - ./:/var/www
       - ./env/php-apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
 
   mysql:
