@@ -13,8 +13,25 @@
 class Config 
 {
     
-    private static array $settings = []; //общий массив со всеми настройками 
+    private array $settings = []; // общий массив со всеми настройками 
 
+    
+    public function __construct(string $Path = '.env') // конструктор класса. по дефолту ищет в папке env файлы
+    {
+    try 
+    {
+        if (!file_exists($Path)) 
+        {
+            throw new Exception("Файл конфигурации $Path не найден.");
+        }
+        $this->load($Path);
+    } 
+    catch (Exception $e) 
+    {
+        error_log($e->getMessage()); // если чет не так закинет ошибку в логи
+    }
+}
+    
     /**
      * Метод для загрузки настроек из конфигурационных файлов в общий массив класса.
      * @param string $filePath путь к конфигурационному файлу.
@@ -23,13 +40,13 @@ class Config
      * 
      * Примеры использования: 
      * 
-     * Config::load('C:/Users/Default/Documents/config.php');
+     * Config.load('C:/Users/Default/Documents/config.php');
      * 
-     * Config::load('../config.ini');
+     * Config.load('../config.ini');
      * 
-     * Config::load('config.env');
+     * Config.load('config.env');
      */
-    public static function load(string $filePath): void 
+    public function load(string $filePath): void 
     {
         if (!file_exists($filePath)) {
             throw new Exception("Файл конфигурации не найден: $filePath");
@@ -45,14 +62,14 @@ class Config
                 $data = parse_ini_file($filePath, true); //true для поддержки секций которые типо: [секция] и дальше параметры
                 break;
             case 'env':
-                $data = self::parseEnv($filePath);
+                $data = $this->parseEnv($filePath);
                 break;
             default:
                 throw new Exception("Формат $extension не поддерживается.");
         }
 
 
-        self::$settings = array_replace_recursive(self::$settings, (array)$data); // рекурсивно сливаем настройки, чтобы можно было загружать несколько файлов
+        $this->settings = array_replace_recursive($this->settings, (array)$data); // рекурсивно сливаем настройки, чтобы можно было загружать несколько файлов
     }
 
     /** 
@@ -66,11 +83,11 @@ class Config
     * Вложенность может быть любой глубины, но суть работы остается та же (get(db.user.password) - вернет ключ password). 
     * Так же у ключа может не быть вложенности (get('ProjectName')).
     * 
-    * Пример использования: $host = Config::get('db.host', 'localhost') -  возвращаемое значение будет либо host из конфига, либо localhost если в конфиге не было найдено ключа.
+    * Пример использования: $host = Config.get('db.host', 'localhost') -  возвращаемое значение будет либо host из конфига, либо localhost если в конфиге не было найдено ключа.
     */
-    public static function get(string $key, $default = null)    
+    public function get(string $key, $default = null)    
     {
-        $data = self::$settings;
+        $data = $this->settings;
         $keys = explode('.', $key); // делит строку key на список разделяя через строки
 
         foreach ($keys as $segment) {
@@ -84,7 +101,7 @@ class Config
         return $data; // возвращает значение параметра
     }
 
-    private static function parseEnv(string $filePath): array // парсер для .env файлов
+    private function parseEnv(string $filePath): array // парсер для .env файлов
     {
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES); //читает строки пропуская пустые
         $env = [];
