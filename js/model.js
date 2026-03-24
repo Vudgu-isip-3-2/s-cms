@@ -1,41 +1,95 @@
-/**
-         * УПРАВЛЕНИЕ МОДАЛЬНЫМИ ОКНАМИ
-         */
+class ModalManager {
+    constructor() {
+        this.modalSelector = '.modal';
+        this.openSelector = '[data-modal-open]';
+        this.closeSelector = '[data-modal-close]';
+        this.activeClass = 'is-open';
+        this.bodyLockClass = 'modal-lock';
 
-        // Функция открытия: меняет display на block для конкретного ID
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = "block";
-                // Блокируем скролл основной страницы при открытом окне
-                document.body.style.overflow = "hidden";
-            }
-        }
+        this.openedModals = new Set();
 
-        // Функция закрытия: возвращает display: none
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = "none";
-                // Возвращаем скролл
-                document.body.style.overflow = "auto";
-            }
-        }
+        this.handleClick = this.handleClick.bind(this);
+        this.handleKeydown = this.handleKeydown.bind(this);
+    }
 
-        // Глобальный слушатель событий клика
-        window.onclick = function(event) {
-            // Если пользователь кликнул на область .modal (вне контента), закрываем окно
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = "none";
-                document.body.style.overflow = "auto";
-            }
-        }
+    init() {
+        document.addEventListener('click', this.handleClick);
+        document.addEventListener('keydown', this.handleKeydown);
+    }
 
-        // Обработка клавиши Esc для удобства (UX)
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                const modals = document.querySelectorAll('.modal');
-                modals.forEach(m => m.style.display = 'none');
-                document.body.style.overflow = "auto";
-            }
+    // получить модалку по id или элементу
+    getModal(target) {
+        if (typeof target === 'string') return document.getElementById(target);
+        if (target instanceof HTMLElement) return target;
+        return null;
+    }
+
+    // открыть модалку
+    open(target) {
+        const modal = this.getModal(target);
+        if (!modal) return;
+
+        modal.classList.add(this.activeClass);
+        modal.setAttribute('aria-hidden', 'false');
+        this.openedModals.add(modal);
+
+        this.updateBody();
+    }
+
+    // закрыть модалку
+    close(target) {
+        const modal = this.getModal(target);
+        if (!modal) return;
+
+        modal.classList.remove(this.activeClass);
+        modal.setAttribute('aria-hidden', 'true');
+        this.openedModals.delete(modal);
+
+        this.updateBody();
+    }
+
+    // закрыть все
+    closeAll() {
+        document.querySelectorAll(this.modalSelector).forEach(m => {
+            m.classList.remove(this.activeClass);
+            m.setAttribute('aria-hidden', 'true');
         });
+
+        this.openedModals.clear();
+        this.updateBody();
+    }
+
+    // блокировка скролла
+    updateBody() {
+        document.body.classList.toggle(
+            this.bodyLockClass,
+            this.openedModals.size > 0
+        );
+    }
+
+    // обработка кликов
+    handleClick(e) {
+        const openBtn = e.target.closest(this.openSelector);
+        if (openBtn) return this.open(openBtn.dataset.modalOpen);
+
+        const closeBtn = e.target.closest(this.closeSelector);
+        if (closeBtn) return this.close(closeBtn.dataset.modalClose);
+
+        const modal = e.target.closest(this.modalSelector);
+        if (modal && e.target === modal) this.close(modal);
+    }
+
+    // ESC закрывает всё
+    handleKeydown(e) {
+        if (e.key === 'Escape') this.closeAll();
+    }
+}
+
+// запуск
+document.addEventListener('DOMContentLoaded', () => {
+    const modalManager = new ModalManager();
+    modalManager.init();
+
+    // доступ из консоли при необходимости
+    window.modalManager = modalManager;
+});
