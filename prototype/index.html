@@ -1,0 +1,97 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Site</title>
+        <style>
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .navigation ul {
+                display: flex;
+                list-style: none;
+                gap: 20px;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 250px;
+                background-color: #e0e0e0;
+                padding: 20px;
+            }
+
+            main {
+                flex: 1;
+                padding: 20px;
+                background-color: #fff;
+            }
+
+            footer {
+                background-color: #f0f0f0;
+                padding: 20px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <header>
+        <div class = "logo">
+            <div class = "logo_img"></div>
+        </div>
+        <nav class = "navigation">
+            <ul>
+                <li><a href = "#">Главная</a></li>
+                <li><a href = "#">Что-то</a></li>
+                <li><a href = "#">Кто-то</a></li>
+                <li><a href = "#">Где-то</a></li>
+                <li><a href = "#">Авторизироваться</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <body>
+        <aside class = "sidebar">
+            <div class = "side">
+                <h3>Навигация</h3>
+                <ul>
+                    <li><a href = "#">Инструменты</a></li>
+                    <li><a href = "#">Сокровища</a></li>
+                    <li><a href = "#">Подсказки</a></li>
+                    <li><a href = "#">Кисти</a></li>
+                    <li><a href = "#">Барашка</a></li>
+                </ul>
+            </div>
+        </aside>
+        
+        <main>
+            <div class = "main-text">
+                Тут что-то точно есть, но пока я не знаю.
+            </div>
+        </main>
+    </body>
+
+    <footer>
+        <div class = "contacts">
+            <ul>
+                <li>Почта</li>
+                <li>Телефон</li>
+                <li>Адрес</li>
+            </ul>
+        </div>
+    </footer>
+    </html>
