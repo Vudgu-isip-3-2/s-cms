@@ -1,11 +1,24 @@
 /**
  * Validation Library - Библиотека для валидации форм
  * @version 1.0.0
+ * 
+ * Что делает: проверяет данные из форм (email, телефон, пароли и т.д.)
+ * Как использовать: 
+ *   const validator = new ValidationLibrary();
+ *   const result = validator.validateField('test@mail.com', [{ name: 'email' }]);
  */
 
 class ValidationLibrary {
+  /**
+   * Создание валидатора
+   * @param {Object} options - настройки (можно передать свои тексты ошибок)
+   * @example
+   * const validator = new ValidationLibrary({
+   *   requiredMessage: 'Заполните это поле'
+   * });
+   */
   constructor(options = {}) {
-    // Сообщения об ошибках (можно менять)
+    // Тексты ошибок. Можно поменять через options или метод setMessages()
     this.messages = {
       required: options.requiredMessage || 'Это поле обязательно для заполнения',
       email: options.emailMessage || 'Введите корректный email адрес',
@@ -19,7 +32,12 @@ class ValidationLibrary {
   }
 
   /**
-   * Проверка обязательного поля
+   * Проверка что поле заполнено
+   * @param {*} value - значение для проверки
+   * @returns {string|null} - текст ошибки или null если ошибок нет
+   * @example
+   * validator.required(''); // "Это поле обязательно для заполнения"
+   * validator.required('text'); // null
    */
   required(value) {
     if (value === undefined || value === null || value === '') {
@@ -30,6 +48,11 @@ class ValidationLibrary {
 
   /**
    * Проверка email
+   * @param {string} value - email для проверки
+   * @returns {string|null} - текст ошибки или null
+   * @example
+   * validator.email('test@mail.com'); // null
+   * validator.email('bad-email'); // "Введите корректный email адрес"
    */
   email(value) {
     if (!value) return null;
@@ -43,11 +66,14 @@ class ValidationLibrary {
 
   /**
    * Проверка телефона (российские номера)
+   * Принимает форматы: +7 999 123-45-67, 8-999-123-45-67, 79991234567
+   * @param {string} value - номер телефона
+   * @returns {string|null} - текст ошибки или null
    */
   phone(value) {
     if (!value) return null;
     
-    // Убираем все пробелы, скобки, дефисы
+    // Убираем пробелы, скобки, дефисы, оставляем только цифры
     const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
     const phoneRegex = /^(\+7|7|8)?[0-9]{10}$/;
     
@@ -58,7 +84,10 @@ class ValidationLibrary {
   }
 
   /**
-   * Проверка минимального значения
+   * Проверка минимального значения (для чисел)
+   * @param {number} value - число
+   * @param {number} minValue - минимальное допустимое значение
+   * @returns {string|null} - текст ошибки или null
    */
   min(value, minValue) {
     if (value === undefined || value === null) return null;
@@ -70,7 +99,10 @@ class ValidationLibrary {
   }
 
   /**
-   * Проверка максимального значения
+   * Проверка максимального значения (для чисел)
+   * @param {number} value - число
+   * @param {number} maxValue - максимальное допустимое значение
+   * @returns {string|null} - текст ошибки или null
    */
   max(value, maxValue) {
     if (value === undefined || value === null) return null;
@@ -83,6 +115,9 @@ class ValidationLibrary {
 
   /**
    * Проверка минимальной длины строки
+   * @param {string} value - текст
+   * @param {number} length - минимальная длина
+   * @returns {string|null} - текст ошибки или null
    */
   minLength(value, length) {
     if (!value) return null;
@@ -95,6 +130,9 @@ class ValidationLibrary {
 
   /**
    * Проверка максимальной длины строки
+   * @param {string} value - текст
+   * @param {number} length - максимальная длина
+   * @returns {string|null} - текст ошибки или null
    */
   maxLength(value, length) {
     if (!value) return null;
@@ -107,6 +145,12 @@ class ValidationLibrary {
 
   /**
    * Проверка совпадения паролей
+   * @param {string} password - пароль
+   * @param {string} confirmPassword - подтверждение пароля
+   * @returns {string|null} - текст ошибки или null
+   * @example
+   * validator.passwordMatch('123', '123'); // null
+   * validator.passwordMatch('123', '456'); // "Пароли не совпадают"
    */
   passwordMatch(password, confirmPassword) {
     if (password !== confirmPassword) {
@@ -117,6 +161,8 @@ class ValidationLibrary {
 
   /**
    * Проверка что значение - число
+   * @param {*} value - значение
+   * @returns {string|null} - текст ошибки или null
    */
   number(value) {
     if (!value) return null;
@@ -129,6 +175,8 @@ class ValidationLibrary {
 
   /**
    * Проверка что значение - целое число
+   * @param {*} value - значение
+   * @returns {string|null} - текст ошибки или null
    */
   integer(value) {
     if (!value) return null;
@@ -140,10 +188,23 @@ class ValidationLibrary {
   }
 
   /**
-   * Валидация одного поля
+   * Проверка одного поля по нескольким правилам
    * @param {*} value - значение для проверки
    * @param {Array} rules - массив правил
-   * @returns {Object} - результат валидации
+   * @returns {Object} { isValid: true/false, errors: ['ошибка1', 'ошибка2'] }
+   * 
+   * @example
+   * validator.validateField('', [
+   *   { name: 'required' }
+   * ]);
+   * // { isValid: false, errors: ['Это поле обязательно для заполнения'] }
+   * 
+   * @example
+   * validator.validateField('test@mail.com', [
+   *   { name: 'required' },
+   *   { name: 'email' }
+   * ]);
+   * // { isValid: true, errors: [] }
    */
   validateField(value, rules) {
     const errors = [];
@@ -183,10 +244,26 @@ class ValidationLibrary {
   }
 
   /**
-   * Валидация всей формы
-   * @param {Object} data - данные формы { поле: значение }
-   * @param {Object} schema - схема валидации { поле: [правила] }
-   * @returns {Object} - результат валидации
+   * Проверка всей формы (нескольких полей)
+   * @param {Object} data - объект с данными { поле: значение }
+   * @param {Object} schema - объект с правилами { поле: [правила] }
+   * @returns {Object} { isValid: true/false, results: { поле: { isValid, errors } } }
+   * 
+   * @example
+   * const data = {
+   *   name: '',
+   *   email: 'test@mail.com'
+   * };
+   * 
+   * const schema = {
+   *   name: [{ name: 'required' }],
+   *   email: [{ name: 'required' }, { name: 'email' }]
+   * };
+   * 
+   * const result = validator.validateForm(data, schema);
+   * // result.isValid = false
+   * // result.results.name.isValid = false
+   * // result.results.email.isValid = true
    */
   validateForm(data, schema) {
     const results = {};
@@ -210,9 +287,16 @@ class ValidationLibrary {
   }
 
   /**
-   * Получить список всех ошибок в виде массива
-   * @param {Object} validationResult - результат валидации
-   * @returns {Array} - массив ошибок [{ field, message }]
+   * Преобразует результат валидации в удобный массив ошибок
+   * @param {Object} validationResult - результат от validateForm()
+   * @returns {Array} - [{ field: 'поле', message: 'ошибка' }]
+   * 
+   * @example
+   * const errors = validator.getErrorsList(result);
+   * // [
+   * //   { field: 'name', message: 'Это поле обязательно' },
+   * //   { field: 'email', message: 'Введите корректный email' }
+   * // ]
    */
   getErrorsList(validationResult) {
     const errors = [];
@@ -232,9 +316,15 @@ class ValidationLibrary {
   }
 
   /**
-   * Получить первую ошибку
-   * @param {Object} validationResult - результат валидации
+   * Получить текст первой ошибки
+   * @param {Object} validationResult - результат от validateForm()
    * @returns {string|null} - текст ошибки или null
+   * 
+   * @example
+   * const firstError = validator.getFirstError(result);
+   * if (firstError) {
+   *   alert(firstError); // показать первую ошибку
+   * }
    */
   getFirstError(validationResult) {
     const errors = this.getErrorsList(validationResult);
@@ -242,17 +332,29 @@ class ValidationLibrary {
   }
 
   /**
-   * Проверить есть ли ошибки
-   * @param {Object} validationResult - результат валидации
-   * @returns {boolean}
+   * Проверить есть ли ошибки в форме
+   * @param {Object} validationResult - результат от validateForm()
+   * @returns {boolean} - true если есть ошибки
+   * 
+   * @example
+   * if (validator.hasErrors(result)) {
+   *   console.log('Форма заполнена неправильно');
+   * }
    */
   hasErrors(validationResult) {
     return !validationResult.isValid;
   }
 
   /**
-   * Установить свои сообщения об ошибках
-   * @param {Object} customMessages - объект с сообщениями
+   * Изменить тексты ошибок
+   * @param {Object} customMessages - объект с новыми текстами
+   * @returns {ValidationLibrary} - возвращает себя (для цепочки вызовов)
+   * 
+   * @example
+   * validator.setMessages({
+   *   required: 'Заполните поле!',
+   *   email: 'Неправильный email!'
+   * });
    */
   setMessages(customMessages) {
     this.messages = { ...this.messages, ...customMessages };
@@ -260,11 +362,12 @@ class ValidationLibrary {
   }
 }
 
-// Экспорт для разных окружений
+// Экспорт для использования в Node.js
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ValidationLibrary;
 }
 
+// Экспорт для использования в браузере
 if (typeof window !== 'undefined') {
   window.ValidationLibrary = ValidationLibrary;
 }
