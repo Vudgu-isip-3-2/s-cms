@@ -14,7 +14,7 @@ class ModalManager {
         this.activeClass = 'is-open';                // класс активной модалки
         this.bodyLockClass = 'modal-lock';           // класс для блокировки скролла
 
-        // --- Состояние ---ch
+        // --- Состояние ---
         this.openedModals = new Set(); // список открытых модалок (Set не хранит дубли)
 
         // --- Привязка контекста ---
