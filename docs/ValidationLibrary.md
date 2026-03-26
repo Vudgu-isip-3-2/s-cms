@@ -8,7 +8,6 @@
 
 ## Подключение
 
-```html
 <script src="путь/к/validation-library.js"></script>
 ```
 
@@ -29,6 +28,7 @@ const validator = new ValidationLibrary({
     maxLengthMessage: 'Максимум {maxLength} символов',
     passwordMatchMessage: 'Пароли не совпадают'
 });
+```
 
 ## required(value)
 
@@ -39,7 +39,7 @@ validator.required('');     // "Это поле обязательно для з
 validator.required('text'); // null
 
 
-```markdown
+```
 ## email(value)
 
 Проверяет корректность email. Возвращает текст ошибки или null.
@@ -49,7 +49,7 @@ validator.email('test@mail.com'); // null
 validator.email('bad');           // "Введите корректный email адрес"
 
 
-```markdown
+```
 ## phone(value)
 
 Проверяет российский номер телефона. Принимает форматы: +7 999 123-45-67, 8-999-123-45-67, 79991234567.
@@ -59,7 +59,7 @@ validator.phone('+7 999 123-45-67'); // null
 validator.phone('123');              // "Введите корректный номер телефона"
 
 
-```markdown
+```
 ## min(value, minValue)
 
 Проверяет, что число не меньше указанного значения.
@@ -70,7 +70,7 @@ validator.min(20, 18); // null
 
 
 
-```markdown
+```
 ## max(value, maxValue)
 
 Проверяет, что число не больше указанного значения.
@@ -81,7 +81,7 @@ validator.max(50, 100);  // null
 
 
 
-```markdown
+```
 ## minLength(value, length)
 
 Проверяет, что длина строки не меньше указанной.
@@ -92,7 +92,7 @@ validator.minLength('abc', 3);  // null
 
 
 
-```markdown
+```
 ## maxLength(value, length)
 
 Проверяет, что длина строки не больше указанной.
@@ -103,7 +103,7 @@ validator.maxLength('abc', 3);    // null
 
 
 
-```markdown
+```
 ## passwordMatch(password, confirm)
 
 Проверяет совпадение паролей.
@@ -114,7 +114,7 @@ validator.passwordMatch('123', '456'); // "Пароли не совпадают"
 
 
 
-```markdown
+```
 ## number(value)
 
 Проверяет, что значение является числом.
@@ -125,7 +125,7 @@ validator.number('123'); // null
 
 
 
-```markdown
+```
 ## integer(value)
 
 Проверяет, что значение является целым числом.
@@ -136,7 +136,7 @@ validator.integer('5');   // null
 
 
 
-```markdown
+```
 ## validateField(value, rules)
 
 Проверяет одно поле по нескольким правилам. Возвращает объект с полями isValid и errors.
@@ -150,7 +150,7 @@ const result = validator.validateField('', [
 
 
 
-```markdown
+```
 ## validateForm(data, schema)
 
 Проверяет всю форму. Принимает объект с данными и объект со схемой. Возвращает объект с полями isValid и results.
@@ -171,7 +171,7 @@ const result = validator.validateForm(data, schema);
 
 
 
-```markdown
+```
 ## getErrorsList(validationResult)
 
 Преобразует результат валидации в массив ошибок с указанием поля.
@@ -182,7 +182,7 @@ const errors = validator.getErrorsList(result);
 
 
 
-```markdown
+```
 ## getFirstError(validationResult)
 
 Возвращает текст первой ошибки или null.
@@ -192,7 +192,7 @@ const firstError = validator.getFirstError(result);
 
 
 
-```markdown
+```
 ## hasErrors(validationResult)
 
 Возвращает true, если есть ошибки.
@@ -204,7 +204,7 @@ if (validator.hasErrors(result)) {
 
 
 
-```markdown
+```
 ## setMessages(customMessages)
 
 Устанавливает кастомные сообщения об ошибках. Возвращает this для цепочки вызовов.
@@ -217,8 +217,8 @@ validator.setMessages({
 
 
 
-
-```javascript
+```
+## Пример Html кода
 /**
  * Validation Library - Библиотека для валидации форм
  * @version 1.0.0
@@ -489,5 +489,3 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   window.ValidationLibrary = ValidationLibrary;
 }
-
-
