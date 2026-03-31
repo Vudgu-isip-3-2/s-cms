@@ -35,3 +35,5 @@ s-cms/
     │                          
     └── index.php  # Единая точка входа (Front Controller)
 ```
+
+
