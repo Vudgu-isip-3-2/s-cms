@@ -1,0 +1,24 @@
+version: '3.2'
+
+services:
+  php-apache:
+    build: env/php-apache
+    ports:
+      - 8086:80
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/var/www
+      - ./env/php-apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+
+  mysql:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-flush-log-at-trx-commit=0 --max_allowed_packet=32505856
+    ports:
+      - 3310:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=verysecret
+      - MYSQL_DATABASE=s-cms
+      - MYSQL_USER=s-cms
+      - MYSQL_PASSWORD=secret

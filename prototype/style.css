@@ -1,0 +1,41 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.navigation ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #e0e0e0;
+    padding: 20px;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
+footer {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+}
