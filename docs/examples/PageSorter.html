@@ -2,28 +2,34 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+
+  <!-- Заголовок страницы -->
   <title>Page Sorter</title>
 
   <style>
+    /* Список без стандартных маркеров */
     #page-list {
       list-style: none;
       padding: 0;
       width: 250px;
     }
 
+    /* Обычный элемент списка */
     #page-list li {
       padding: 10px;
       margin: 5px 0;
       background: #eee;
-      cursor: grab;
+      cursor: grab; /* курсор "перетаскивания" */
       border-radius: 6px;
       transition: 0.2s;
     }
 
+    /* Стиль элемента во время перетаскивания */
     #page-list li.dragging {
       opacity: 0.5;
     }
 
+    /* Подсветка элемента при наведении */
     #page-list li.over {
       border: 2px dashed #666;
     }
@@ -31,22 +37,33 @@
 </head>
 <body>
 
+<!-- Заголовок страницы -->
 <h2>Список страниц</h2>
 
+<!-- Список, который будет сортироваться -->
 <ul id="page-list">
+  <!-- data-id используется для хранения порядка -->
   <li data-id="1">Главная</li>
   <li data-id="2">О нас</li>
   <li data-id="3">Наш блог</li>
   <li data-id="4">Контакты</li>
 </ul>
 
+<!-- Подключение JS-класса PageSorter -->
 <script src="../../public/js/PageSorter.js"></script>
+
 <script>
+  // Создание экземпляра сортировщика
   const sorter = new PageSorter({
+
+    // Селектор списка
     listSelector: '#page-list',
+
+    // Сохранять порядок в localStorage
     useLocalStorage: true
   });
 
+  // Вывод текущего порядка элементов в консоль
   console.log('Порядок:', sorter.getOrder());
 </script>
 
