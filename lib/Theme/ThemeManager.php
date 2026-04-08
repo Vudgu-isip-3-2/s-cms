@@ -10,9 +10,9 @@ class ThemeManager {
     
     public function __construct($configFile = null) {
         // Определение путей
-        $this->themesPath = __DIR__ . '/themes/';
+        $this->themesPath = __DIR__ . '/../../themes/';
         $this->assetsUrl = '/assets/themes/';
-        $this->configFile = $configFile ?: __DIR__ . '/theme_config.php';
+        $this->configFile = $configFile ?: __DIR__ . '/config/theme_config.php';
         
         // Загрузка конфигурации
         $this->loadThemesConfig();
