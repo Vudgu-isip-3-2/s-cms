@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Sorter</title>
+
+  <style>
+    #page-list {
+      list-style: none;
+      padding: 0;
+      width: 250px;
+    }
+
+    #page-list li {
+      padding: 10px;
+      margin: 5px 0;
+      background: #eee;
+      cursor: grab;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    #page-list li.dragging {
+      opacity: 0.5;
+    }
+
+    #page-list li.over {
+      border: 2px dashed #666;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Список страниц</h2>
+
+<ul id="page-list">
+  <li data-id="1">Главная</li>
+  <li data-id="2">О нас</li>
+  <li data-id="3">Наш блог</li>
+  <li data-id="4">Контакты</li>
+</ul>
+
+<script src="../../public/js/PageSorter.js"></script>
+<script>
+  const sorter = new PageSorter({
+    listSelector: '#page-list',
+    useLocalStorage: true
+  });
+
+  console.log('Порядок:', sorter.getOrder());
+</script>
+
+</body>
+</html>
