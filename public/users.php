@@ -1,35 +1,40 @@
 <?php
-// users.php - Страница вывода списка пользователей
 
-require_once __DIR__ . '/../lib/DataBase.php';
+// 1. Подключаем класс Config (поднимаемся на уровень вверх из public в корень)
 require_once __DIR__ . '/../lib/Config_Class.php';
 
+// 2. Подключаем класс DataBase (если он еще не подключен через автозагрузку)
+require_once __DIR__ . '/../lib/DataBase.php';
 
-$config = new Config(__DIR__ . '/../.env');  // ← создаём объект!
+// 3. Создаем экземпляр Config, указывая путь к .env файлу
+// dirname(__DIR__) вернет путь к корневой папке проекта (/var/www)
+$config = new Config(dirname(__DIR__) . '/.env');
 
-$db = DataBase::getInstance('mysql', 's-cms', 's-cms', 'secret');
-    
-    if (!$db->isConnected()) {
-        throw new Exception("Не удалось подключиться к базе данных");
-        echo "Не удалось подключиться к базе данных";
-    }
-    
-    // Запрос к базе
-    $sql = "SELECT 
-                u.id,
-                u.username,
-                u.display_name,
-                u.role,
-                u.bio,
-                u.is_active,
-                u.created_at,
-                m.filename as avatar_filename,
-                m.file_path as avatar_path
-            FROM users u
-            LEFT JOIN media m ON u.avatar_media_id = m.id
-            ORDER BY u.created_at DESC";
-    
-    $users = $db->query($sql);
+// 4. Получаем настройки. 
+// Второй параметр ('mysql') — это значение по умолчанию, если в .env вдруг нет ключа.
+$host     = $config->get('DB_HOST', 'mysql');
+$dbname   = $config->get('DB_DATABASE', 's-cms');
+$username = $config->get('DB_USERNAME', 's-cms');
+$password = $config->get('DB_PASSWORD', 'secret');
+
+// 5. Подключаемся к БД
+    $db = DataBase::getInstance($host, $dbname, $username, $password);
+// Запрос к базе
+$sql = "SELECT 
+            u.id,
+            u.username,
+            u.display_name,
+            u.role,
+            u.bio,
+            u.is_active,
+            u.created_at,
+            m.filename as avatar_filename,
+            m.file_path as avatar_path
+        FROM users u
+        LEFT JOIN media m ON u.avatar_media_id = m.id
+        ORDER BY u.created_at DESC";
+
+$users = $db->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -216,7 +221,7 @@ $db = DataBase::getInstance('mysql', 's-cms', 's-cms', 'secret');
 </head>
 <body>
     <div class="container">
-        <h1> Пользователи системы</h1>
+        <h1>Пользователи системы</h1>
         
         <?php if (isset($error)): ?>
             <div class="error">⚠️ <?= htmlspecialchars($error) ?></div>
@@ -240,43 +245,57 @@ $db = DataBase::getInstance('mysql', 's-cms', 's-cms', 'secret');
                             <td>
                                 <div class="user-info">
                                     <div class="avatar">
-                                        <?php if ($user['avatar_path']): ?>
+                                        <?php if (!empty($user['avatar_path'])): ?>
                                             <img src="<?= htmlspecialchars($user['avatar_path']) ?>" 
                                                  alt="<?= htmlspecialchars($user['display_name']) ?>">
                                         <?php else: ?>
-                                            <?= mb_strtoupper(mb_substr($user['display_name'], 0, 1)) ?>
+                                            <?= mb_strtoupper(mb_substr($user['display_name'] ?? 'U', 0, 1)) ?>
                                         <?php endif; ?>
                                     </div>
                                     <div class="user-details">
-                                        <strong><?= htmlspecialchars($user['display_name']) ?></strong>
-                                        <small>@<?= htmlspecialchars($user['username']) ?></small>
+                                        <strong><?= htmlspecialchars($user['display_name'] ?? '') ?></strong>
+                                        <small>@<?= htmlspecialchars($user['username'] ?? '') ?></small>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <span class="role <?= htmlspecialchars($user['role']) ?>">
-                                    <?= htmlspecialchars($user['role']) ?>
+                                <span class="role <?= htmlspecialchars($user['role'] ?? 'user') ?>">
+                                    <?= htmlspecialchars($user['role'] ?? 'user') ?>
                                 </span>
                             </td>
                             <td>
-                                <span class="status <?= $user['is_active'] ? 'active' : 'inactive' ?>">
-                                    <?= $user['is_active'] ? 'Активен' : 'Неактивен' ?>
+                                <span class="status <?= ($user['is_active'] ?? false) ? 'active' : 'inactive' ?>">
+                                    <?= ($user['is_active'] ?? false) ? 'Активен' : 'Неактивен' ?>
                                 </span>
                             </td>
                             <td>
                                 <div class="bio">
-                                    <?= $user['bio'] ? htmlspecialchars($user['bio']) : '—' ?>
+                                    <?= !empty($user['bio']) ? htmlspecialchars($user['bio']) : '—' ?>
                                 </div>
                             </td>
                             <td>
-                                <time class="date" datetime="<?= $user['created_at'] ?>">
-                                    <?= date('d.m.Y', strtotime($user['created_at'])) ?>
+                                <time class="date" datetime="<?= $user['created_at'] ?? '' ?>">
+                                    <?= !empty($user['created_at']) ? date('d.m.Y', strtotime($user['created_at'])) : '—' ?>
                                 </time>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            
+        <?php else: ?>
+            <!-- Показываем, если пользователей нет -->
+            <div class="empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <p>Пользователи не найдены</p>
+            </div>
+        <?php endif; ?>
+        
     </div>
 </body>
 </html>
