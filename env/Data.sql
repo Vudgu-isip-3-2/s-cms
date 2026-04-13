@@ -1,4 +1,4 @@
--- 1. Сначала заполняем таблицу users (нет внешних ключей)
+-- 1. Сначала заполняем таблицу users (нет внешних ключе
 INSERT INTO users (id, username, display_name, role, bio, avatar_media_id, is_active, external_id, created_at) VALUES
 (1, 'admin', 'Администратор', 'admin', 'Главный администратор сайта', NULL, 1, 'ext_001', '2024-01-01 10:00:00'),
 (2, 'john_doe', 'Иван Петров', 'author', 'Технический писатель, специалист по веб-разработке', NULL, 1, 'ext_002', '2024-01-05 12:30:00'),
@@ -100,7 +100,9 @@ INSERT INTO comments (id, post_id, author_name, author_email, author_website, co
 (6, 3, 'PHP_Developer', 'phpdev@example.com', NULL, 'Отличный материал для начинающих!', '192.168.1.120', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'approved', NULL, '2024-02-02 10:30:00'),
 (7, 1, 'Спаммер', 'spam@spam.com', 'https://spam.com', 'Купите у нас ссылки!', '192.168.1.200', 'Mozilla/5.0', 'spam', NULL, '2024-01-18 03:00:00'),
 (8, 4, 'Архитектор', 'arch@example.com', NULL, 'Хорошо бы добавить примеры ER-диаграмм.', '192.168.1.125', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'pending', NULL, '2024-02-06 09:00:00');
-
+set sql_safe_updates = 1;
+delete from settings;
+select * from settings;
 -- 11. Заполняем settings
 INSERT INTO settings (id, setting_key, setting_value, setting_type, group_name, updated_at) VALUES
 (1, 'site_name', 'CMS Portal', 'string', 'general', '2024-01-01 09:00:00'),
