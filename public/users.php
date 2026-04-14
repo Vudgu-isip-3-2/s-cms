@@ -12,10 +12,10 @@ $config = new Config(dirname(__DIR__) . '/.env');
 
 // 4. Получаем настройки. 
 // Второй параметр ('mysql') — это значение по умолчанию, если в .env вдруг нет ключа.
-$host     = $config->get('DB_HOST', 'mysql');
-$dbname   = $config->get('DB_DATABASE', 's-cms');
-$username = $config->get('DB_USERNAME', 's-cms');
-$password = $config->get('DB_PASSWORD', 'secret');
+$host     = $config->get('DB_HOST');
+$dbname   = $config->get('DB_DATABASE');
+$username = $config->get('DB_USERNAME');
+$password = $config->get('DB_PASSWORD');
 
 // 5. Подключаемся к БД
     $db = DataBase::getInstance($host, $dbname, $username, $password);
