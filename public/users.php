@@ -1,8 +1,5 @@
 <?php
 
-// ==========================================
-// 1. ПОДКЛЮЧЕНИЕ К БД (БЕЗ ИЗМЕНЕНИЙ)
-// ==========================================
 require_once __DIR__ . '/../lib/Config_Class.php';
 require_once __DIR__ . '/../lib/DataBase.php';
 
@@ -20,15 +17,13 @@ try {
     die(" Ошибка подключения к БД: " . $e->getMessage());
 }
 
-// ==========================================
-// 2. ОБРАБОТКА ФОРМ (ДОБАВЛЕНИЕ / УДАЛЕНИЕ)
-// ==========================================
+//Добавление и удаление пользователей
 $message = '';
 $message_type = ''; // 'success' или 'error'
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // 🔹 УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ
+    // УДАЛЕНИЕ 
     if (isset($_POST['action']) && $_POST['action'] === 'delete_user') {
         $id = intval($_POST['id']); // Безопасность: приводим к целому числу
         if ($id > 0) {
@@ -43,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // 🔹 ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ (Исправлено под вашу структуру)
+    // ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ 
     if (isset($_POST['action']) && $_POST['action'] === 'add_user') {
         $username_new   = $_POST['username'] ?? '';
         $display_name   = $_POST['display_name'] ?? '';
@@ -71,9 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ==========================================
-// 3. ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ ВЫВОДА
-// ==========================================
+// Получение данных для ввода
 $sql = "SELECT 
             u.id,
             u.username,
@@ -98,45 +91,45 @@ $users = $db->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список пользователей - CMS</title>
     <style>
-        /* Стили остаются без изменений */
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); padding: 30px; }
         h1 { color: #2c3e50; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #eee; }
-        
+
         .error { background: #fee; color: #c00; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c00; }
         .success { background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #22c55e; }
-        
+
         .stats { display: flex; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
         .stat-card { background: #f8f9fa; padding: 15px 25px; border-radius: 8px; border-left: 4px solid #3498db; }
         .stat-card .number { font-size: 24px; font-weight: bold; color: #2c3e50; }
         .stat-card .label { color: #7f8c8d; font-size: 14px; }
-        
+
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background: #34495e; color: #fff; padding: 14px 12px; text-align: left; font-weight: 600; font-size: 14px; }
         td { padding: 14px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
         tr:hover { background: #f8f9fa; }
-        
+
         .avatar { width: 48px; height: 48px; border-radius: 50%; background: #ecf0f1; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #7f8c8d; font-size: 18px; overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-details strong { display: block; color: #2c3e50; }
         .user-details small { color: #7f8c8d; font-family: monospace; }
-        
+
         .role { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
         .role.admin { background: #e74c3c20; color: #c0392b; }
         .role.editor { background: #f39c1220; color: #d35400; }
         .role.author { background: #3498db20; color: #2980b9; }
         .role.user { background: #95a5a620; color: #7f8c8d; }
-        
+
         .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .status.active { background: #2ecc7120; color: #27ae60; }
         .status.active::before { content: ''; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; }
         .status.inactive { background: #95a5a620; color: #7f8c8d; }
-        
+
         .bio { color: #555; font-size: 14px; max-width: 300px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .date { color: #7f8c8d; font-size: 13px; white-space: nowrap; }
-        
+
         .empty { text-align: center; padding: 40px; color: #7f8c8d; }
         .empty svg { width: 64px; height: 64px; margin-bottom: 15px; opacity: 0.5; }
 
@@ -173,7 +166,7 @@ $users = $db->query($sql);
             </div>
         <?php endif; ?>
              
-        <!-- 🔹 Панель добавления пользователя -->
+        <!-- Панель добавления пользователя -->
         <details class="add-panel">
             <summary> Добавить нового пользователя</summary>
             <form method="POST" style="margin-top: 15px;">
