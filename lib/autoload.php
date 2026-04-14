@@ -1,24 +1,38 @@
 <?php
 // autoload.php
 
-spl_autoload_register(function ($class) {
-    $baseDir = __DIR__ . '/src/';
+spl_autoload_register(function ($fullClass) {
+    $libDir = __DIR__ . '/';
     
-    // Простая карта: где искать классы
-    $map = [
-        // Классы из /lib/
-        'Main'         => __DIR__ . '/Main.php',
-        'Config'       => __DIR__ . '/Config_class.php',
-        'ErrorHandler' => __DIR__ . '/ErrorHandler.php',
-        'Router'       => __DIR__ . '/Router.php',
-        'DataBase'     => __DIR__ . '/DataBase.php',
-    ];
-    
-    // Проверяем, есть ли класс в карте
-    if (isset($map[$class])) {
-        $file = $map[$class];
+    if (strpos($fullClass, '\\') !== false) {
+        $relativePath = str_replace('\\', '/', $fullClass) . '.php';
+        $file = $libDir . $relativePath;
+        
         if (file_exists($file)) {
             require_once $file;
+            return;
+        }
+    }
+    
+    $className = $fullClass;
+    
+    if (!is_dir($libDir)) return;
+    
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($libDir, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::LEAVES_ONLY
+    );
+    
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getExtension() === 'php') {
+            if ($file->getFilename() === 'autoload.php') continue;
+            
+            $content = file_get_contents($file->getPathname());
+            
+            if (preg_match('/\bclass\s+' . preg_quote($className, '/') . '\b/i', $content)) {
+                require_once $file->getPathname();
+                return;
+            }
         }
     }
 });

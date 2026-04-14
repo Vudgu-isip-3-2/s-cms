@@ -23,6 +23,7 @@ $pageTitle = "Главная страница";
 echo $themeManager->render($content, $pageTitle);
 require_once __DIR__ . '/../lib/autoload.php';
 
+    $Theme = new ThemeManager();
     $app = new Main();
     $Config = new Config();
     $ErrorHandler = new ErrorHandler();
