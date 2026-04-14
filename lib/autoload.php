@@ -6,8 +6,12 @@ spl_autoload_register(function ($class) {
     
     // Простая карта: где искать классы
     $map = [
-        'UserController' => $baseDir . 'controllers/' . $class . '.php',
-        'User'           => $baseDir . 'models/' . $class . '.php',
+        // Классы из /lib/
+        'Main'         => __DIR__ . '/Main.php',
+        'Config'       => __DIR__ . '/Config_class.php',
+        'ErrorHandler' => __DIR__ . '/ErrorHandler.php',
+        'Router'       => __DIR__ . '/Router.php',
+        'DataBase'     => __DIR__ . '/DataBase.php',
     ];
     
     // Проверяем, есть ли класс в карте

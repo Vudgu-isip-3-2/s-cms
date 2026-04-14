@@ -1,0 +1,5 @@
+[2026-04-14 08:26:53] [Uncaught Exception] Too few arguments to function DataBase::__construct(), 0 passed in /var/www/public/index.php on line 30 and exactly 4 expected in /var/www/lib/DataBase.php:12
+Stack trace:
+#0 /var/www/public/index.php(30): DataBase->__construct()
+#1 {main}
+--------------------------------------------------------------------------------
