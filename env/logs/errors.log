@@ -73,3 +73,13 @@ Stack trace:
 #0 /var/www/public/index.php(31): DataBase->__construct()
 #1 {main}
 --------------------------------------------------------------------------------
+[2026-04-14 09:05:49] [Uncaught Exception] Too few arguments to function DataBase::__construct(), 0 passed in /var/www/public/index.php on line 31 and exactly 4 expected in /var/www/lib/DataBase.php:12
+Stack trace:
+#0 /var/www/public/index.php(31): DataBase->__construct()
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-04-14 09:21:53] [Uncaught Exception] Too few arguments to function DataBase::__construct(), 0 passed in /var/www/public/index.php on line 31 and exactly 4 expected in /var/www/lib/DataBase.php:12
+Stack trace:
+#0 /var/www/public/index.php(31): DataBase->__construct()
+#1 {main}
+--------------------------------------------------------------------------------
