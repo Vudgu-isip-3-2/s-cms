@@ -279,3 +279,55 @@ body {
     font-size: 14px;  
     font-weight: 400; 
 }
+
+/* Модальное окно */
+/* Фоновая подложка (оверлей) */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+/* Состояние, когда модалка открыта (добавляется через JS) */
+.modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Контентная часть окна */
+.modal-content {
+    background: var(--header-bg, #fff); 
+    padding: 40px;
+    border-radius: 8px;
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+    color: var(--text-color, #000);
+}
+
+/* Кнопка закрытия (крестик) */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--accent, #8C905F);
+}
+
+/* Блокировка скролла страницы при открытой модалке */
+body.modal-lock {
+    overflow: hidden;
+}
