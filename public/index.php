@@ -27,5 +27,4 @@ require_once __DIR__ . '/../lib/Config_class.php';
 require_once __DIR__ . '/../lib/Main.php';
 
 $app = new Main();
-trigger_error("test_error", E_ERROR);
 ?>
