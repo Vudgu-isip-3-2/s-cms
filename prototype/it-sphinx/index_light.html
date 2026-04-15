@@ -6,6 +6,7 @@
     <title>IT-Sphinx</title>
     <link rel="stylesheet" href="style_light.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="../../public/js/ModalManager.js"></script>
 </head>
 <body>
 
@@ -91,7 +92,7 @@
                 <label class="checkbox">
                     <input type="checkbox"> Соглашаюсь на обработку данных
                 </label>
-                <button type="submit" class="btn-submit">ОТПРАВИТЬ</button>
+                <button type="button" class="btn-submit" data-modal-open="thanksModal">ОТПРАВИТЬ</button>
             </form>
         </section>
     </main>
@@ -130,6 +131,14 @@
         burgerBtn.classList.toggle('open');
     });
 </script>
+
+<div id="thanksModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+        <button class="modal-close" data-modal-close="thanksModal">&times;</button>
+        <h3>Заявка отправлена!</h3>
+        <p>Мы свяжемся с вами в ближайшее время.</p>
+    </div>
+</div>
 
 </body>
 </html>
