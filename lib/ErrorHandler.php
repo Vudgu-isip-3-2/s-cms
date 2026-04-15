@@ -119,6 +119,9 @@ class ErrorHandler
         if (!self::$debug) {
             self::displayUserFriendlyMessage();
         }
+        else{
+            echo $type, $message, $file, $line, $trace;
+        }
         exit(1); // завершаем выполнение скрипта после обработки ошибки
     }
 
