@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="ValidationLibrary.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма регистрации - ValidationLibrary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #5C5B4A;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: #D6D2C4;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #8A897C;
+        }
+
+        h1 {
+            color: #3D3B30;
+            margin-bottom: 8px;
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #5C5B4A;
+            margin-bottom: 30px;
+            font-size: 14px;
+            border-bottom: 2px solid #8A897C;
+            padding-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #3D3B30;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        label .required {
+            color: #8B3A3A;
+            margin-left: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #8A897C;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #F0EDE5;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4A4A3C;
+            background: white;
+        }
+
+        input.error {
+            border-color: #8B3A3A;
+            background: #FDE8E8;
+        }
+
+        input.success {
+            border-color: #2E5C3E;
+            background: #E8F0EC;
+        }
+
+        .error-message {
+            color: #8B3A3A;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #4A4A3C;
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #3D3B30;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .error-summary {
+            background: #FDE8E8;
+            border-left: 4px solid #8B3A3A;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .error-summary p {
+            color: #8B3A3A;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .error-summary ul {
+            margin-left: 20px;
+            color: #6B2D2D;
+        }
+
+        .error-summary li {
+            margin: 5px 0;
+        }
+
+        .success-summary {
+            background: #E8F0EC;
+            border-left: 4px solid #2E5C3E;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #2E5C3E;
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .age-hint {
+            font-size: 12px;
+            color: #5C5B4A;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>Регистрация</h1>
+            <p class="subtitle">Создайте аккаунт, заполнив форму ниже</p>
+
+            <div id="errorSummary" class="error-summary hidden"></div>
+            <div id="successSummary" class="success-summary hidden">
+                ✅ Форма успешно отправлена!
+            </div>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Имя <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" placeholder="Введите ваше имя">
+                    <span class="error-message" id="nameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Электронная почта <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="ivan@example.com">
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Номер телефона</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+7 999 123-45-67">
+                    <span class="error-message" id="phoneError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Возраст <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" placeholder="18">
+                    <span class="error-message" id="ageError"></span>
+                    <div class="age-hint">Минимальный возраст: 18 лет</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль <span class="required">*</span></label>
+                    <input type="password" id="password" name="password" placeholder="Минимум 6 символов">
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Подтверждение пароля <span class="required">*</span></label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Повторите пароль">
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
