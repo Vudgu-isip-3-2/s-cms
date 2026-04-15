@@ -7,15 +7,16 @@ class Main
     private $config;
     private $database;
     private $router;
+    private $errorHandler;
     private $loadedClasses = [];
     
     public function __construct()
     {
-        ErrorHandler::register(true, __DIR__ . '/../env/logs/errors.log');
-        
+      
         $this->loadConfiguration();
         $this->initializeRouter();
         $this->initializeDatabase();
+        $this->initializeErrorHandler();
         $this->displayLoadedClasses();
     }
     
@@ -56,6 +57,18 @@ class Main
             }
         } catch (Exception $e) {
             $this->loadedClasses['Database'] = 'ошибка';
+        }
+    }
+
+    private function initializeErrorHandler(): void
+    {
+        try{
+            require_once __DIR__ . '/../lib/ErrorHandler.php';
+            ErrorHandler::register(true, __DIR__ . '/../env/logs/errors.log');
+            $this->errorHandler = new ErrorHandler();
+            $this->loadedClasses['ErrorHandler'] = 'работает';
+        }catch (Exception $e) {
+            $this->loadedClasses['ErrorHandler'] = 'ошибка';
         }
     }
     
