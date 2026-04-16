@@ -1,137 +1,68 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"> <!-- кодировка -->
+    <meta charset="UTF-8">
     <title>Регистрация</title>
 </head>
 
-<body> 
+<body>
 
-<h2>Регистрация</h2> 
+<h2>Регистрация</h2>
 
-<form id="form"> <!-- форма -->
+<form id="form">
 
     <div>
         <label>Логин:</label><br>
-        <input type="text" id="login"> <!-- ввод логина -->
+        <input type="text" id="login">
     </div>
 
     <div>
         <label>Пароль:</label><br>
-        <input type="password" id="password"> <!-- ввод пароля -->
+        <input type="password" id="password">
     </div>
 
     <div>
-        <label>Подтвердите пароль:</label><br>
-        <input type="password" id="confirmPassword"> <!-- повтор пароля -->
+        <label>Подтверждение пароля:</label><br>
+        <input type="password" id="confirmPassword">
     </div>
-
-    <div id="errors"></div> <!-- сюда выводятся ошибки -->
 
     <button type="submit">Зарегистрироваться</button>
 
 </form>
 
+<div id="errors"></div>
+
+<!-- библиотека -->
+<script src="/public/js/ValidationLibrary.js"></script>
+
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-// класс для валидации
-class ValidationLibrary {
-    constructor(options = {}) {
-        this.messages = {
-            required: options.requiredMessage || 'Это поле обязательно для заполнения',
-            passwordMatch: options.passwordMatchMessage || 'Пароли не совпадают'
+    const form = document.getElementById("form");
+    const errorsDiv = document.getElementById("errors");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const data = {
+            login: document.getElementById("login").value,
+            password: document.getElementById("password").value,
+            confirmPassword: document.getElementById("confirmPassword").value
         };
-    }
 
-    required(value) { // проверка на пустоту
-        if (!value) return this.messages.required;
-        return null;
-    }
+        const validator = new ValidationLibrary();
 
-    passwordMatch(p1, p2) { // проверка совпадения паролей
-        if (p1 !== p2) return this.messages.passwordMatch;
-        return null;
-    }
+        const result = validator.validateForm(data, {
+            login: [{ name: "required" }],
+            password: [{ name: "required" }],
+            confirmPassword: [{ name: "required" }]
+        });
 
-    validateForm(data, schema) { // проверка всей формы
-        const results = {};
-        let isValid = true;
-
-        for (const field in schema) {
-            const value = data[field];
-            const rules = schema[field];
-            const errors = [];
-
-            rules.forEach(rule => {
-                if (rule.name === 'required') {
-                    const err = this.required(value);
-                    if (err) errors.push(err);
-                }
-            });
-
-            if (errors.length > 0) isValid = false;
-
-            results[field] = {
-                isValid: errors.length === 0,
-                errors: errors
-            };
-        }
-
-        return { isValid, results }; // результат проверки
-    }
-
-    getErrorsList(result) { // получить список ошибок
-        const list = [];
-
-        for (const field in result.results) {
-            result.results[field].errors.forEach(err => {
-                list.push({ field, message: err });
-            });
-        }
-
-        return list;
-    }
-
-    hasErrors(result) { // есть ли ошибки
-        return !result.isValid;
-    }
-}
-
-// получаем элементы
-const form = document.getElementById('form');
-const errorsDiv = document.getElementById('errors');
-
-// создаём валидатор
-const validator = new ValidationLibrary({
-    requiredMessage: 'Поле должно быть заполнено',
-    passwordMatchMessage: 'Пароли не совпадают'
-});
-
-// обработка отправки формы
-form.addEventListener('submit', function(e) {
-    e.preventDefault(); // отмена отправки
-
-    // собираем данные
-    const data = {
-        login: document.getElementById('login').value,
-        password: document.getElementById('password').value,
-        confirmPassword: document.getElementById('confirmPassword').value
-    };
-
-    // правила проверки
-    const schema = {
-        login: [{ name: 'required' }],
-        password: [{ name: 'required' }],
-        confirmPassword: [{ name: 'required' }]
-    };
-
-    const result = validator.validateForm(data, schema); // проверка
-
-    // проверка совпадения паролей
-    const passError = validator.passwordMatch(data.password, data.confirmPassword);
-    if (passError) {
-        result.isValid = false;
-        result.results.confirmPassword.errors.push(passError);
+        // проверка совпадения паролей
+         const passError = validator.passwordMatch(data.password, data.confirmPassword);
+        if (passError) {
+             result.isValid = false;
+            result.results.confirmPassword.errors.push(passError);
     }
 
     errorsDiv.innerHTML = ''; // очистка ошибок
@@ -146,10 +77,12 @@ form.addEventListener('submit', function(e) {
             errorsDiv.appendChild(p);
         });
     } else {
-        alert('Успешно!'); // если всё круто
+        alert('Успешно!'); // если всё ок
     }
 });
 
+
+});
 </script>
 
 </body>
