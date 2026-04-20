@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Sphinx</title>
+    <link rel="stylesheet" href="style_light.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="../../public/js/ModalManager.js"></script>
+</head>
+<body>
+
+    <header class="header">
+    <div class="container header-content">
+        <div class="logo">SPHIN<span>X</span></div>
+        <div class="footer-logo">
+        </div>
+        
+        <div class="header-right">
+            <div class="phone-block">
+                <img src="templates/phone.png" alt="phone" class="phone-icon">
+                <a href="tel:+79127777777" class="phone">7-912-777-77-77</a>
+            </div>
+            
+            <button class="burger" id="burgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="dropdown-panel" id="dropdownPanel">
+    <div class="container dropdown-content">
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">Новости</a></li>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+    <main class="container">
+        <section class="hero">
+            <h1>МЫ СОЗДАЕМ ТЕХНОЛОГИИ БУДУЩЕГО</h1>
+            <p>
+                Мы специализируемся на разработке и внедрении высоконагруженных информационных систем. Наша миссия — создавать инструменты, которые делают работу с информацией интуитивно понятной и эффективной. Мы объединяем глубокую экспертизу в области проектирования баз данных и современный подход к пользовательскому опыту.
+За 10 лет работы мы реализовали более 150 проектов в государственном и частном секторах, помогая компаниям перейти от бумажной волокиты к полностью автоматизированному цифровому контуру
+            </p>
+        </section>
+
+        <section class="publications">
+            <h2 class="section-title">НАШИ ПОСЛЕДНИЕ ПУБЛИКАЦИИ</h2>
+            <div class="pub-grid">
+    <article class="card card--featured">
+        <div class="card-img"></div>
+        <span class="card-date">09.03.2026</span>
+        <h3>Оптимизация PostgreSQL для высоконагруженных систем: опыт наших инженеров.</h3>
+        <p>Разбираем кейс миграции крупного ритейлера на распределенные базы данных и делимся результатами повышения отказоустойчивости.</p>
+    </article>
+
+    <article class="card card--small">
+        <div class="card-img"></div>
+        <span class="card-date">01.03.2026</span>
+        <h3>Релиз платформы DataStream 2.5: новые инструменты предиктивной аналитики.</h3>
+    </article>
+
+    <article class="card card--small">
+        <div class="card-img"></div>
+        <span class="card-date">24.01.2026</span>
+        <h3>Как BI-системы помогают сокращать операционные расходы производства на 15%.</h3>
+    </article>
+
+    <article class="card card--small">
+        <div class="card-img"></div>
+        <span class="card-date">29.12.2025</span>
+        <h3>DataCore открывает набор на летнюю оплачиваемую стажировку для студентов.</h3>
+    </article>
+</div>
+        </section>
+
+        <section class="feedback">
+            <h2>ЗАПИСАТЬСЯ НА КОНСУЛЬТАЦИЮ</h2>
+            <form class="form">
+                <input type="text" placeholder="ФИО:">
+                <input type="tel" placeholder="Телефон:">
+                <input type="email" placeholder="Email*:">
+                <label class="checkbox">
+                    <input type="checkbox"> Соглашаюсь на обработку данных
+                </label>
+                <button type="button" class="btn-submit" data-modal-open="thanksModal">ОТПРАВИТЬ</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-logo">
+    <div class="logo">SPHIN<span>X</span></div>
+    <p class="footer-copy">2026©</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <a href="#">Telegram</a>
+                <a href="#">ВКонтакте</a>
+            </div>
+            <div class="footer-col">
+                <h4>Новости</h4>
+                <a href="#">Мероприятия</a>
+                <a href="#">Статьи</a>
+            </div>
+            <div class="footer-col">
+                <h4>Компания</h4>
+                <a href="#">Профиль</a>
+                <a href="#">Карьера</a>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    const burgerBtn = document.getElementById('burgerBtn');
+    const dropdownPanel = document.getElementById('dropdownPanel');
+
+    burgerBtn.addEventListener('click', () => {
+        dropdownPanel.classList.toggle('active');
+        burgerBtn.classList.toggle('open');
+    });
+</script>
+
+<div id="thanksModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+        <button class="modal-close" data-modal-close="thanksModal">&times;</button>
+        <h3>Заявка отправлена!</h3>
+        <p>Мы свяжемся с вами в ближайшее время.</p>
+    </div>
+</div>
+
+</body>
+</html>
