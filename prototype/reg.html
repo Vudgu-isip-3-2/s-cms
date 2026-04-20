@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+
+<body>
+
+<h2>Регистрация</h2>
+
+<form id="form">
+
+    <div>
+        <label>Логин:</label><br>
+        <input type="text" id="login">
+    </div>
+
+    <div>
+        <label>Пароль:</label><br>
+        <input type="password" id="password">
+    </div>
+
+    <div>
+        <label>Подтверждение пароля:</label><br>
+        <input type="password" id="confirmPassword">
+    </div>
+
+    <button type="submit">Зарегистрироваться</button>
+
+</form>
+
+<div id="errors"></div>
+
+<!-- библиотека -->
+<script src="/public/js/ValidationLibrary.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("form");
+    const errorsDiv = document.getElementById("errors");
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const data = {
+            login: document.getElementById("login").value,
+            password: document.getElementById("password").value,
+            confirmPassword: document.getElementById("confirmPassword").value
+        };
+
+        const validator = new ValidationLibrary();
+
+        const result = validator.validateForm(data, {
+            login: [{ name: "required" }],
+            password: [{ name: "required" }],
+            confirmPassword: [{ name: "required" }]
+        });
+
+        // проверка совпадения паролей
+         const passError = validator.passwordMatch(data.password, data.confirmPassword);
+        if (passError) {
+             result.isValid = false;
+            result.results.confirmPassword.errors.push(passError);
+    }
+
+    errorsDiv.innerHTML = ''; // очистка ошибок
+
+    // если есть ошибки — выводим
+    if (validator.hasErrors(result)) {
+        const errors = validator.getErrorsList(result);
+
+        errors.forEach(err => {
+            const p = document.createElement('p');
+            p.textContent = err.field + ': ' + err.message;
+            errorsDiv.appendChild(p);
+        });
+    } else {
+        alert('Успешно!'); // если всё ок
+    }
+});
+
+
+});
+</script>
+
+</body>
+</html>
