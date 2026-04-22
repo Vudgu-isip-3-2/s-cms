@@ -1,0 +1,319 @@
+body {
+    margin: 0px;
+}
+
+.header {
+    position: absolute;
+    width: 100%;
+    height: 97px;
+    background-color: #203548;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.logotype {
+    display: flex;
+    flex-direction: row;
+    background-color: #203548;
+    align-items: center;
+}
+
+.logo {
+    width: 96px;
+    height: 96px;
+}
+
+.logo_txt {
+    width: 210px;
+    height: 61px;
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    white-space: nowrap;
+    font-family: 'Inria Serif';
+
+    color: #ACBFD8;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 2%;
+}
+
+a, a:visited {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.navi {
+    display: flex;
+    flex-direction: row;
+    height: 33px;
+
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: justify;
+    gap: clamp(15px, 3vw, 50px);
+    align-items: center;
+
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    margin-right: 5%;
+}
+
+.auth {
+    align-items: center;
+    width: 46px;
+    height: 46px;
+}
+
+p {
+    align-items: center;
+}
+
+.auth_butt {
+    display: flex;
+    width: 312px;
+    height: 52px;
+
+    background: #6E9CBE;
+    border-radius: 21px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    align-items: center;
+
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+}
+
+.auth_text {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    font-family: 'Inria Serif';
+}
+
+.hi_screen {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.back_img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.back_layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(61, 66, 202, 0.43);
+}
+
+.main_screen {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 16%;
+    left: 6%;
+    right: 6%;
+    bottom: 16%;
+    gap: 20px;
+}
+
+.main_text {
+    margin: 0;
+    width: 70%;
+    height: 183px;
+
+    font-family: 'Tinos';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 74px;
+
+    color: #FFFFFF;
+}
+
+.mini_text {
+    margin: 0;
+    height: 61px;
+
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 29px;
+
+    color: #FFFFFF;
+}
+
+.main_button {
+    width: 556px;
+    height: 46px;
+
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 43px;
+    text-align: center;
+
+    color: #FFFFFF;
+
+    width: 556px;
+    height: 86px;
+
+    background: #B0C7D7;
+    border-radius: 21px;
+
+    border: none;
+    cursor: pointer;
+}
+
+footer {
+    display: flex;
+    background: #203548;
+}
+
+.left_foot {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin-left: 2%;
+    margin-top: 10px;
+}
+
+.about_us {
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    color: #4146ED;
+    margin: 0%;
+}
+
+.about_descr {
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #6E9CBE;
+    margin-top: 10px;
+}
+
+.service_text {
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    margin: 0%;
+
+    color: #FFFFFF;
+}
+
+.services {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.service_1,
+.service_2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 140px;
+    height: 140px;
+
+    background: #6E9CBE;
+    border-radius: 25px;
+    border: none;
+
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.service_1_img,
+.service_2_img {
+    width: 60px;
+    height: 60px;
+}
+
+.service_1_text,
+.service_2_text {
+    margin-top: 10px;
+    font-family: 'Inria Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+
+    color: #FFFFFF;
+}
+
+.service {
+    display: flex;
+    flex-direction: column;
+}
+
+.right_foot {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+
+.last_posts_txt {
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    margin-top: 10px;
+
+    color: #FFFFFF;
+}
+
+.posts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.posts button {
+
+    width: 311px;
+    height: 143px;
+
+    background: #6E9CBE;
+    border-radius: 31px;
+    border: none;
+
+    cursor: pointer;
+}
