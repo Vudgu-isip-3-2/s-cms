@@ -4,6 +4,10 @@ body {
     margin: 0 auto;
     padding: 20px;
     background-color: #f0f0f0;
+    /*
+    При анализе, была выявлена ошибка малой констрастности
+     background-color: #ffebee;
+    */
 }
 
 h1 {
@@ -29,6 +33,9 @@ h1 {
 }
 
 button {
+    /*
+    Также можно исправить для устранения ошибки:
+    background: black ;*/
     background: #007bff;
     color: white;
     border: none;
