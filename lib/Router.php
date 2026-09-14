@@ -72,3 +72,8 @@ class Router
         echo "</ul>";
     }
 }
+// Пользовательские
+'/comments/add'              => 'CommentsController@add',
+
+// Админские
+'/admin/comments'            => 'AdminCommentsController@index',
