@@ -71,15 +71,40 @@ class Main
             $this->loadedClasses['ErrorHandler'] = 'ошибка';
         }
     }
-    
-    private function displayLoadedClasses(): void
+        /**
+     * Отдаёт объект DataBase наружу.
+     */
+    public function getDatabase(): DataBase
     {
+        return $this->database;
+    }
+    
+     private function displayLoadedClasses(): void
+    {
+        if (!getenv('APP_DEBUG')) {
+            return;
+        }
         echo "Подключенные классы:<br>";
-        
         foreach ($this->loadedClasses as $className => $status) {
             echo "$className: $status<br>";
         }
-        
-        echo "";
     }
 }
+    /**
+     * Отдаёт объект DataBase наружу
+     */
+    public function getDatabase(): DataBase
+    {
+        return $this->database;
+    }
+        private function displayLoadedClasses(): void
+    {
+        if (!getenv('APP_DEBUG')) {
+            return;
+        }
+        echo "Подключенные классы:<br>";
+        foreach ($this->loadedClasses as $className => $status) {
+            echo "$className: $status<br>";
+        }
+    }
+    

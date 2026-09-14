@@ -22,3 +22,6 @@ services:
       - MYSQL_DATABASE=s-cms
       - MYSQL_USER=s-cms
       - MYSQL_PASSWORD=secret
+    
+    docker exec -i <container> mysql -u s-cms -psecret cms_bd < sql/comments.sql
+    docker ps
