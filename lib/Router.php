@@ -1,74 +1,45 @@
 <?php
-
 /**
- * Класс Router
- * Простой прототип обработчика адресной строки.
- * Получает параметры из URL и позволяет их вывести.
+ * Класс Router - обновленная версия с поддержкой страниц
  */
 class Router
 {
-    /**
-     * Массив параметров из адресной строки
-     */
     private array $params = [];
 
-    /**
-     * Конструктор класса
-     * Вызывается автоматически при создании объекта
-     */
     public function __construct()
     {
-        // При создании объекта сразу разбираем адресную строку
         $this->parseUrl();
     }
 
-    /**
-     * Метод разбора URL
-     * Получает параметры из глобального массива $_GET
-     */
     private function parseUrl(): void
     {
-        // $_GET содержит все параметры после знака ?
-        // Например: site.com?name=Ivan&age=20
+        // Собираем все параметры из URL
         $this->params = $_GET;
     }
 
-    /**
-     * Метод возвращает массив параметров
-     * Можно использовать в других частях программы
-     */
     public function getParams(): array
     {
         return $this->params;
     }
 
     /**
-     * Метод выводит параметры в браузер
+     * Главный метод маршрутизации
+     * Решает, что показать пользователю
      */
     public function render(): void
     {
-        // Проверяем, есть ли параметры
-        if (empty($this->params)) {
-            echo "Параметры не переданы";
-            return;
+        // Если в URL есть параметр page_id (например, ?page_id=5)
+        if (!empty($this->params['page_id'])) {
+            $pageId = (int)$this->params['page_id'];
+            
+            // Подключаем шаблон одной страницы
+            // Файл должен лежать по пути themes/default/post.php
+            require_once __DIR__ . '/../themes/default/post.php';
+            return; // Завершаем выполнение, чтобы не вывести ничего лишнего
         }
 
-        // Заголовок вывода
-        echo "<h2>Параметры из адресной строки</h2>";
-
-        echo "<ul>";
-
-        // Перебираем все параметры
-        foreach ($this->params as $key => $value) {
-
-            // htmlspecialchars защищает от HTML-инъекций
-            $key = htmlspecialchars($key);
-            $value = htmlspecialchars($value);
-
-            // Выводим параметр
-            echo "<li>$key = $value</li>";
-        }
-
-        echo "</ul>";
+        // Если page_id нет — показываем главную страницу
+        // Создайте файл themes/default/index.php, если его еще нет
+        require_once __DIR__ . '/../themes/default/index.php';
     }
 }
