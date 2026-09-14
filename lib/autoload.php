@@ -8,6 +8,7 @@ spl_autoload_register(function ($class) {
     $map = [
         'UserController' => $baseDir . 'controllers/' . $class . '.php',
         'User'           => $baseDir . 'models/' . $class . '.php',
+        'PasswordValidator' => __DIR__ . '/PasswordValidator.php',
     ];
     
     // Проверяем, есть ли класс в карте
