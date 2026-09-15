@@ -3,86 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .error-message { color: red; margin-top: 15px; font-weight: bold; display: none; }
+    </style>
 </head>
-
 <body>
 
 <h2>Регистрация</h2>
 
-<form id="form">
-
-    <div>
-        <label>Логин:</label><br>
-        <input type="text" id="login">
+<form id="regForm">
+    <div class="form-group">
+        <label for="login">Логин:</label>
+        <!-- Атрибут required не даст отправить форму, если поле пустое -->
+        <input type="text" id="login" name="login" required>
     </div>
 
-    <div>
-        <label>Пароль:</label><br>
-        <input type="password" id="password">
+    <div class="form-group">
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
     </div>
 
-    <div>
-        <label>Подтверждение пароля:</label><br>
-        <input type="password" id="confirmPassword">
+    <div class="form-group">
+        <label for="confirmPassword">Подтверждение пароля:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
     </div>
 
     <button type="submit">Зарегистрироваться</button>
-
 </form>
 
-<div id="errors"></div>
-
-<!-- библиотека -->
-<script src="/public/js/ValidationLibrary.js"></script>
+<!-- Блок для вывода сообщения об ошибке -->
+<p id="errorMessage" class="error-message"></p>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    // Находим форму и блок для ошибок
+    const form = document.getElementById("regForm");
+    const errorText = document.getElementById("errorMessage");
 
-    const form = document.getElementById("form");
-    const errorsDiv = document.getElementById("errors");
+    // Слушаем событие отправки формы
+    form.addEventListener("submit", function(event) {
+        // Получаем значения полей
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
 
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
+        // Простая проверка: совпадают ли пароли
+        if (password !== confirmPassword) {
 
-        const data = {
-            login: document.getElementById("login").value,
-            password: document.getElementById("password").value,
-            confirmPassword: document.getElementById("confirmPassword").value
-        };
+            event.preventDefault(); 
 
-        const validator = new ValidationLibrary();
+            errorText.textContent = "Ошибка: Пароли не совпадают!";
+            errorText.style.display = "block";
+        } else {
 
-        const result = validator.validateForm(data, {
-            login: [{ name: "required" }],
-            password: [{ name: "required" }],
-            confirmPassword: [{ name: "required" }]
-        });
+            errorText.style.display = "none";
 
-        // проверка совпадения паролей
-         const passError = validator.passwordMatch(data.password, data.confirmPassword);
-        if (passError) {
-             result.isValid = false;
-            result.results.confirmPassword.errors.push(passError);
-    }
-
-    errorsDiv.innerHTML = ''; // очистка ошибок
-
-    // если есть ошибки — выводим
-    if (validator.hasErrors(result)) {
-        const errors = validator.getErrorsList(result);
-
-        errors.forEach(err => {
-            const p = document.createElement('p');
-            p.textContent = err.field + ': ' + err.message;
-            errorsDiv.appendChild(p);
-        });
-    } else {
-        alert('Успешно!'); // если всё ок
-    }
-});
-
-
-});
+        }
+    });
 </script>
 
 </body>
