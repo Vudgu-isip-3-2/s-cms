@@ -321,12 +321,6 @@ passwordStrength(password, options = {}) {
         errors: errors
     };
 }
-    
-    return {
-      isValid: errors.length === 0,
-      errors: errors
-    };
-  }
 
   /**
    * Проверка всей формы (нескольких полей)
