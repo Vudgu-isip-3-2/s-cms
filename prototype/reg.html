@@ -2,88 +2,90 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Регистрация с проверкой</title>
+    <style>
+        /* Эти стили сделают сообщения красивыми и понятными */
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none; /* По умолчанию сообщение скрыто */
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none; /* По умолчанию сообщение скрыто */
+        }
+    </style>
 </head>
-
 <body>
 
-<h2>Регистрация</h2>
+    <h2>Регистрация</h2>
 
-<form id="form">
+    <!-- Мы дали форме имя (id="regForm"), чтобы JavaScript мог ее найти -->
+    <form id="regForm">
+        <div>
+            <label>Логин:</label><br>
+            <!-- Слово required означает: "Браузер, не давай отправить форму, если это поле пустое!" -->
+            <input type="text" id="login" required>
+        </div>
+        <br>
+        <div>
+            <label>Пароль:</label><br>
+            <input type="password" id="password" required>
+        </div>
+        <br>
+        <div>
+            <label>Подтверждение пароля:</label><br>
+            <input type="password" id="confirmPassword" required>
+        </div>
+        <br>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
 
-    <div>
-        <label>Логин:</label><br>
-        <input type="text" id="login">
-    </div>
+    <!-- В этот пустой блок JavaScript будет писать текст ошибки или успеха -->
+    <div id="messageBox"></div>
 
-    <div>
-        <label>Пароль:</label><br>
-        <input type="password" id="password">
-    </div>
+    <!-- Начинается магия JavaScript (проверка данных) -->
+    <script>
+        // 1. Находим нашу форму и пустой блок для сообщений на странице
+        const form = document.getElementById('regForm');
+        const messageBox = document.getElementById('messageBox');
 
-    <div>
-        <label>Подтверждение пароля:</label><br>
-        <input type="password" id="confirmPassword">
-    </div>
+        // 2. Говорим браузеру: "Следи, когда пользователь нажмет кнопку отправки формы"
+        form.addEventListener('submit', function(event) {
+            
+            // 3. Забираем то, что человек прямо сейчас ввел в поля паролей
+            const pass1 = document.getElementById('password').value;
+            const pass2 = document.getElementById('confirmPassword').value;
 
-    <button type="submit">Зарегистрироваться</button>
-
-</form>
-
-<div id="errors"></div>
-
-<!-- библиотека -->
-<script src="/public/js/ValidationLibrary.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const form = document.getElementById("form");
-    const errorsDiv = document.getElementById("errors");
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const data = {
-            login: document.getElementById("login").value,
-            password: document.getElementById("password").value,
-            confirmPassword: document.getElementById("confirmPassword").value
-        };
-
-        const validator = new ValidationLibrary();
-
-        const result = validator.validateForm(data, {
-            login: [{ name: "required" }],
-            password: [{ name: "required" }],
-            confirmPassword: [{ name: "required" }]
+            // 4. Проверяем: если пароль 1 НЕ РАВЕН (!==) паролю 2
+            if (pass1 !== pass2) {
+                // ОТМЕНЯЕМ стандартную отправку формы (чтобы страница просто не перезагрузилась)
+                event.preventDefault(); 
+                
+                // Пишем текст ошибки
+                messageBox.textContent = '⚠️ Ошибка: Пароли не совпадают! Проверьте ввод.';
+                // Делаем текст красным
+                messageBox.className = 'error-message'; 
+                // Показываем блок на экране
+                messageBox.style.display = 'block'; 
+            } 
+            // 5. А если пароли РАВНЫ (всё хорошо)
+            else {
+                // Для теста мы пока просто покажем сообщение об успехе. 
+                // (В реальном проекте здесь форма отправилась бы на сервер)
+                event.preventDefault(); 
+                
+                messageBox.textContent = '✅ Успех: Все поля заполнены, пароли совпадают!!!!';
+                // Делаем текст зеленым
+                messageBox.className = 'success-message'; 
+                // Показываем блок на экране
+                messageBox.style.display = 'block'; 
+            }
         });
-
-        // проверка совпадения паролей
-         const passError = validator.passwordMatch(data.password, data.confirmPassword);
-        if (passError) {
-             result.isValid = false;
-            result.results.confirmPassword.errors.push(passError);
-    }
-
-    errorsDiv.innerHTML = ''; // очистка ошибок
-
-    // если есть ошибки — выводим
-    if (validator.hasErrors(result)) {
-        const errors = validator.getErrorsList(result);
-
-        errors.forEach(err => {
-            const p = document.createElement('p');
-            p.textContent = err.field + ': ' + err.message;
-            errorsDiv.appendChild(p);
-        });
-    } else {
-        alert('Успешно!'); // если всё ок
-    }
-});
-
-
-});
-</script>
+    </script>
 
 </body>
 </html>
