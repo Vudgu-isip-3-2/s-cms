@@ -53,10 +53,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const validator = new ValidationLibrary();
 
         const result = validator.validateForm(data, {
-            login: [{ name: "required" }],
-            password: [{ name: "required" }],
-            confirmPassword: [{ name: "required" }]
-        });
+    login: [{ name: "required" }],
+    password: [
+        { name: "required" },
+        { name: "passwordStrength", params: { minLength: 8, requireDigits: true } }
+    ],
+    confirmPassword: [
+        { name: "required" }
+    ]
+});
 
         // проверка совпадения паролей
          const passError = validator.passwordMatch(data.password, data.confirmPassword);

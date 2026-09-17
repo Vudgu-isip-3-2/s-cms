@@ -20,14 +20,17 @@ class ValidationLibrary {
   constructor(options = {}) {
     // Тексты ошибок. Можно поменять через options или метод setMessages()
     this.messages = {
-      required: options.requiredMessage || 'Это поле обязательно для заполнения',
-      email: options.emailMessage || 'Введите корректный email адрес',
-      min: options.minMessage || 'Значение должно быть не меньше {min}',
-      max: options.maxMessage || 'Значение должно быть не больше {max}',
-      minLength: options.minLengthMessage || 'Минимальная длина {minLength} символов',
-      maxLength: options.maxLengthMessage || 'Максимальная длина {maxLength} символов',
-      passwordMatch: options.passwordMatchMessage || 'Пароли не совпадают',
-      phone: options.phoneMessage || 'Введите корректный номер телефона'
+    required: options.requiredMessage || 'Это поле обязательно для заполнения',
+    email: options.emailMessage || 'Введите корректный email адрес',
+    min: options.minMessage || 'Значение должно быть не меньше {min}',
+    max: options.maxMessage || 'Значение должно быть не больше {max}',
+    minLength: options.minLengthMessage || 'Минимальная длина {minLength} символов',
+    maxLength: options.maxLengthMessage || 'Максимальная длина {maxLength} символов',
+    passwordMatch: options.passwordMatchMessage || 'Пароли не совпадают',
+    phone: options.phoneMessage || 'Введите корректный номер телефона',
+    passwordTooShort: options.passwordTooShortMessage || 'Пароль слишком короткий. Минимальная длина - {minLength} символов',
+    passwordNoDigits: options.passwordNoDigitsMessage || 'Пароль должен содержать хотя бы одну цифру',
+    passwordWeak: options.passwordWeakMessage || 'Пароль слишком простой. Используйте заглавные буквы, цифры и специальные символы'
     };
   }
 
@@ -158,6 +161,79 @@ class ValidationLibrary {
     }
     return null;
   }
+  /**
+ * Проверка минимальной длины пароля
+ * @param {string} password - пароль для проверки
+ * @param {number} minLength - минимальная длина
+ * @returns {string|null} - текст ошибки или null
+ * @example
+ * validator.passwordLength('12345', 8); // "Пароль слишком короткий..."
+ * validator.passwordLength('12345678', 8); // null
+ */
+passwordLength(password, minLength = 8) {
+    if (!password) return null;
+    if (password.length < minLength) {
+        return this.messages.passwordTooShort.replace('{minLength}', minLength);
+    }
+    return null;
+}
+
+/**
+ * Проверка наличия цифр в пароле
+ * @param {string} password - пароль для проверки
+ * @returns {string|null} - текст ошибки или null
+ * @example
+ * validator.passwordHasDigits('password'); // "Пароль должен содержать..."
+ * validator.passwordHasDigits('password123'); // null
+ */
+passwordHasDigits(password) {
+    if (!password) return null;
+    const hasDigit = /\d/.test(password);
+    if (!hasDigit) {
+        return this.messages.passwordNoDigits;
+    }
+    return null;
+}
+
+/**
+ * Комплексная проверка сложности пароля
+ * @param {string} password - пароль для проверки
+ * @param {Object} options - опции проверки
+ * @returns {string|null} - текст ошибки или null
+ * @example
+ * validator.passwordStrength('simple'); // ошибка
+ * validator.passwordStrength('StrongPass123!'); // null
+ */
+passwordStrength(password, options = {}) {
+    if (!password) return null;
+    
+    const minLength = options.minLength || 8;
+    const requireDigits = options.requireDigits !== false; // по умолчанию true
+    const requireUppercase = options.requireUppercase || false;
+    const requireSpecial = options.requireSpecial || false;
+    
+    // Проверка длины
+    if (password.length < minLength) {
+        return this.messages.passwordTooShort.replace('{minLength}', minLength);
+    }
+    
+    // Проверка наличия цифр
+    if (requireDigits && !/\d/.test(password)) {
+        return this.messages.passwordNoDigits;
+    }
+    
+    // Проверка наличия заглавных букв
+    if (requireUppercase && !/[A-Z]/.test(password)) {
+        return 'Пароль должен содержать хотя бы одну заглавную букву';
+    }
+    
+    // Проверка наличия специальных символов
+    if (requireSpecial && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        return 'Пароль должен содержать хотя бы один специальный символ';
+    }
+    
+    return null;
+}
 
   /**
    * Проверка что значение - число
@@ -208,34 +284,43 @@ class ValidationLibrary {
    */
   validateField(value, rules) {
     const errors = [];
-    
     for (const rule of rules) {
-      let error = null;
-      
-      if (rule.name === 'required') {
-        error = this.required(value);
-      } else if (rule.name === 'email') {
-        error = this.email(value);
-      } else if (rule.name === 'phone') {
-        error = this.phone(value);
-      } else if (rule.name === 'min') {
-        error = this.min(value, rule.params);
-      } else if (rule.name === 'max') {
-        error = this.max(value, rule.params);
-      } else if (rule.name === 'minLength') {
-        error = this.minLength(value, rule.params);
-      } else if (rule.name === 'maxLength') {
-        error = this.maxLength(value, rule.params);
-      } else if (rule.name === 'number') {
-        error = this.number(value);
-      } else if (rule.name === 'integer') {
-        error = this.integer(value);
-      }
-      
-      if (error) {
-        errors.push(error);
-      }
+        let error = null;
+        if (rule.name === 'required') {
+            error = this.required(value);
+        } else if (rule.name === 'email') {
+            error = this.email(value);
+        } else if (rule.name === 'phone') {
+            error = this.phone(value);
+        } else if (rule.name === 'min') {
+            error = this.min(value, rule.params);
+        } else if (rule.name === 'max') {
+            error = this.max(value, rule.params);
+        } else if (rule.name === 'minLength') {
+            error = this.minLength(value, rule.params);
+        } else if (rule.name === 'maxLength') {
+            error = this.maxLength(value, rule.params);
+        } else if (rule.name === 'number') {
+            error = this.number(value);
+        } else if (rule.name === 'integer') {
+            error = this.integer(value);
+        } else if (rule.name === 'passwordLength') {
+            error = this.passwordLength(value, rule.params);
+        } else if (rule.name === 'passwordHasDigits') {
+            error = this.passwordHasDigits(value);
+        } else if (rule.name === 'passwordStrength') {
+            error = this.passwordStrength(value, rule.params);
+        }
+
+        if (error) {
+            errors.push(error);
+        }
     }
+    return {
+        isValid: errors.length === 0,
+        errors: errors
+    };
+}
     
     return {
       isValid: errors.length === 0,
