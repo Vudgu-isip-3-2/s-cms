@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Калькулятор заказов кафе</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Калькулятор заказов кафе</h1>
+    
+    <div id="app">
+        <div id="order-items">
+            <h3>Позиции заказа</h3>
+            <div id="items-list">
+                <div class="order-item">
+                    <input type="text" placeholder="Название" class="item-name" aria-label="">
+                    <input type="number" placeholder="Цена" class="item-price">
+                    <input type="number" placeholder="Кол-во" class="item-quantity" value="1">
+                    <button onclick="removeItem(this)">Удалить</button>
+                </div>
+            </div>
+            <button onclick="addItem()">+ Добавить позицию</button>
+        </div>
+        
+        <div id="order-controls">
+            <div>
+                <label>Код скидки:</label>
+                <input type="text" id="discount-code">
+            </div>
+            <div>
+                <label>Чаевые (%):</label>
+                <input type="text" id="tip-percent" value="0">
+            </div>
+            <div>
+                <label>Ставка налога (%):</label>
+                <input type="text" id="tax-rate" value="10">
+            </div>
+            <button onclick="calculate()">Рассчитать</button>
+        </div>
+        
+        <div id="result">
+            <h3>Результат</h3>
+            <div id="result-content"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
