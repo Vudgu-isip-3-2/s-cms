@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    /*
+    При анализе, была выявлена ошибка малой констрастности
+     background-color: #ffebee;
+    */
+}
+
+h1 {
+    color: #333;
+}
+
+#app {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.order-item {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f9f9f9;
+    display: flex;
+    gap: 10px;
+}
+
+.order-item input {
+    padding: 5px;
+}
+
+button {
+    /*
+    Также можно исправить для устранения ошибки:
+    background: black ;*/
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.error {
+    background: #ffebee;
+    color: #c62828;
+}
